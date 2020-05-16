@@ -50,6 +50,7 @@ def relative(flat_list):
     flat_list = [x-(sum(flat_list)/len(flat_list)) for x in flat_list]
     return(flat_list)
 def displayer(plotlist3,title):
+    plotlist3 = relative(plotlist3)
     plt.figure(figsize=(12,4))
     y=plotlist3
     x=[(x/len(plotlist3))*100 for x  in range(len(plotlist3))]

@@ -52,3 +52,5 @@ def summaryfunc(z):
             v= df[df.type==i][df[f'{z}']>=x].subtype
         print(f'{i}: {v}')
     print(f"This concludes the segment of analysis for {z[:-10]}")
+
+

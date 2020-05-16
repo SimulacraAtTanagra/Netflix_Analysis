@@ -25,5 +25,3 @@ def dfranked(df):
     ia=IMDb()
     df['rank']=df.title.apply(ranksearch)
     return(df)
-if __name__ == "__main__":
-    dfranked()
