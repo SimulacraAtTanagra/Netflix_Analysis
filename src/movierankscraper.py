@@ -8,7 +8,7 @@ from imdb import IMDb
 import pandas as pd
 import json
 from pandas.io.json import json_normalize
-import memedict as md
+
 
 def ranksearch(i):
     try:
@@ -18,10 +18,12 @@ def ranksearch(i):
             z = ia.get_movie(int(y))
             return(z.data['rating'])
         except:
-            print(f"search for {i} went okay but didn't print")
+            pass
     except:
-        print(f"both search and print failed for {1}")
+        pass
 def dfranked(df):
     ia=IMDb()
     df['rank']=df.title.apply(ranksearch)
+    df=df[['title','listed_in','type','rank']]
+    df.columns=['title','genre','type','rank']
     return(df)

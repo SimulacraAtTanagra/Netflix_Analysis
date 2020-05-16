@@ -13,6 +13,10 @@ import PyPDF2
 import os
 from numpy.polynomial import Polynomial
 
+lang = 'english'
+labMT,labMTvector,labMTwordList = emotionFileReader(stopval=0.0,lang=lang,returnVector=True)
+
+
 def wordshifter(i):
     iValence,iFvec = emotion(i,labMT,shift=True,happsList=labMTvector)
     iStoppedVec = stopper(iFvec,labMTvector,labMTwordList,stopVal=1.0)
@@ -36,15 +40,21 @@ def flatlist(plotlist):
 def consolidate(fn):
     plist=[]
     x=os.getcwd()
-    directory_in_str= f'{x}\\transcripts\\'
+    if x[-11:]!='transcripts':
+        directory_in_str= f'{x}\\transcripts\\'
+    else:
+        directory_in_str = x
     directory = os.fsencode(directory_in_str)           #defines directory as indicated string
     os.chdir(directory)                                 #navigate to directory specified
     for file in os.listdir(directory):                  #iterates over all the files here
         filename = os.fsdecode(file)                    #specifies filename from file
-        if filename.startswith(fn):                  #isolates epub for further action
+        if fn in filename:                  #isolates epub for further action
             #print(filename)
             plist.append(scriptscrape(filename))
-    plist = flatlist(plist)
+    try:
+        plist = flatlist(plist)
+    except:
+        plist= plist[0]
     return(plist)
 def relative(flat_list):
     flat_list = [x-(sum(flat_list)/len(flat_list)) for x in flat_list]
@@ -54,13 +64,10 @@ def displayer(plotlist3,title):
     plt.figure(figsize=(12,4))
     y=plotlist3
     x=[(x/len(plotlist3))*100 for x  in range(len(plotlist3))]
-    #plt.plot(x, y,alpha=.5)
+    plt.plot(x, y,alpha=.5)
     plt.title(title)
     plt.ylabel("Sentiment of dialog relative to mean")
     plt.xlabel("Percent of Movie")
     p = Polynomial.fit(x, y, 30)
     plt.plot(*p.linspace())
     plt.show()
-if __name__=="__main__":
-    lang = 'english'
-    labMT,labMTvector,labMTwordList = emotionFileReader(stopval=0.0,lang=lang,returnVector=True)

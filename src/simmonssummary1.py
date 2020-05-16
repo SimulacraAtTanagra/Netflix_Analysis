@@ -4,6 +4,8 @@ Created on Mon Apr 27 01:06:44 2020
 
 @author: shane
 """
+import warnings
+warnings.simplefilter(action='ignore', category=UserWarning)
 
 import pandas as pd
 def stringer(x):
@@ -37,14 +39,17 @@ def simmonscleaner(df):
      'OTHER_vert_perc', 'OTHER_horiz_perc', 'OTHER_index', 'NOTA_sample',
      'NOTA_weighted_sample', 'NOTA_vert_perc', 'NOTA_horiz_perc', 'NOTA_index'])
     df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
-    titlegroups= [x for x in df.columns if x.endswith("perc")][2:]
-    titlevert= [x for x in titlegroups if "vert" in x]
     df['type'] = df.category.apply(stringer)
     df['subtype'] = df.category.apply(stringer2)
     return(df)
-def summaryfunc(z):
+def grouping(df):
+    titlegroups= [x for x in df.columns if x.endswith("perc")][2:]
+    titlevert= [x for x in titlegroups if "vert" in x]
+    return(titlevert)
+
+def summaryfunc(df,z):
     print(f"Begin analysis for {z[:-10]}")
-    for i in df.type.unique():
+    for i in df.type.unique()[:-5]:
         x = df[df.type==i][f'{z}'].max()
         try: 
             v= df[df.type==i][df[f'{z}']>=x].subtype.values[0]        
