@@ -38,6 +38,7 @@ def pullsynopsis(i):
 def dfranked(df):
     ia=IMDb()
     df['rank']=df.title.apply(ranksearch)
+    #df['fulltext']=df.title.apply(pullsynopsis)
     df=df[['title','listed_in','type','rank']]
     df.columns=['title','genre','type','rank']
     return(df)
