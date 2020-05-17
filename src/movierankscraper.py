@@ -21,7 +21,7 @@ def ranksearch(i):
             pass
     except:
         pass
-#this function pulls full synopsis if on imdb as string
+#this function pulls full script if on imdb as string
 #this can be used as a feeder for the graphing function to scrape storylines
 def pullsynopsis(i):    
     try:
@@ -38,7 +38,9 @@ def pullsynopsis(i):
 def dfranked(df):
     ia=IMDb()
     df['rank']=df.title.apply(ranksearch)
-    #df['fulltext']=df.title.apply(pullsynopsis)
-    df=df[['title','listed_in','type','rank']]
-    df.columns=['title','genre','type','rank']
+    #df['synopsis']=df.title.apply(pullsynopsis)
+    #df=df[['title','listed_in','type','rank','synopsis']]
+    #df.columns=['title','genre','type','rank','synopsis']
+    df=df[['title','listed_in','type','rank','synopsis']]
+    df.columns=['title','genre','type','rank','synopsis']
     return(df)

@@ -12,6 +12,9 @@ from matplotlib import animation
 import PyPDF2 
 import os
 from numpy.polynomial import Polynomial
+import nltk
+from nltk import word_tokenize, sent_tokenize
+from funcy import chunks
 
 lang = 'english'
 labMT,labMTvector,labMTwordList = emotionFileReader(stopval=0.0,lang=lang,returnVector=True)
@@ -21,6 +24,15 @@ def wordshifter(i):
     iValence,iFvec = emotion(i,labMT,shift=True,happsList=labMTvector)
     iStoppedVec = stopper(iFvec,labMTvector,labMTwordList,stopVal=1.0)
     return(emotionV(iStoppedVec,labMTvector))
+def splitscrape(text):
+    sent_corpus = []
+    for s in nltk.sent_tokenize(text):
+        sent_corpus.append(s)
+    sent_corpus= ["".join(chunk) for chunk in chunks(int(len(sent_corpus)/100),sent_corpus)]
+    plotlist=[]
+    for x in sent_corpus:
+        plotlist.append(wordshifter(x))
+    return(plotlist)
 def scriptscrape(filename):
     pdfFileObj = open(filename, 'rb')
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj) 

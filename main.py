@@ -15,6 +15,7 @@ from src.simmonssummary1 import summaryfunc as sf
 from src.movierankscraper import dfranked
 from src.graphing import consolidate as con
 from src.graphing import displayer as disp
+from src.graphing import splitscrape as spl
 
 # %%
 
@@ -31,6 +32,7 @@ sf(simmons,gp(simmons)[0])
 # %%
 
 #generating ranking data by looking at netflix's catalog listings in imdb
+#commented out functionality for collecting the script as well, encoded as 'synopsis'
 rankings = pd.read_csv(f'{cwd}\\data\\netflix_titles.csv')
 rankings=dfranked(rankings)
 
@@ -42,7 +44,7 @@ import src.display
 
 # %%
 
-#Showing story curves for the material we havein transcripts
+#Showing story curves for the material we have in transcripts
 disp(con("Tiger-King"),"Tiger King Sentiment")
 
 # %%
@@ -52,3 +54,14 @@ disp(con("BIRD BOX"),"Bird Box Sentiment")
 # %%
 
 disp(con("Awakens"),"Star Wars: The Force Awakens Sentiment")
+
+# %%
+
+#this is sample code for displaying all storylines for all of the transcripts
+'''
+for i,x in enumerate(rankings.values()):
+    try:
+        disp(spl(x),f'{rankings.iloc[i].title} Sentiment')
+    except:
+        pass
+'''
